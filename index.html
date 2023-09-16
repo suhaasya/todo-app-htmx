@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.5"></script>
+    <title>Document</title>
+    <style>
+      li.htmx-swapping {
+        opacity: 0;
+        transition: opacity 1s ease-out;
+      }
+    </style>
+  </head>
+  <body class="h-screen">
+    <section
+      class="m-auto md:w-1/2 border-r border-l border-solid border-black h-full overflow-y-scroll"
+    >
+      <section>
+        <form
+          hx-post="/tasks"
+          hx-target="#response"
+          hx-swap="outerHTML"
+          id="my-form"
+          class="border-b border-solid border-black flex justify-center py-4 px-20 flex-col gap-4"
+        >
+          <textarea
+            name="post"
+            id=""
+            cols="30"
+            rows="3"
+            class="border border-solid border-black"
+            placeholder="enter your task"
+          ></textarea>
+          <button class="border border-solid border-blue-700">Add</button>
+        </form>
+
+        <ul
+          id="list"
+          hx-confirm="Are you sure?"
+          hx-target="closest li"
+          hx-swap="outerHTML swap:1s"
+        >
+          <li id="response"></li>
+        </ul>
+      </section>
+    </section>
+
+    <script>
+      document.body.addEventListener("htmx:afterSwap", function (evt) {
+        const form = document.querySelector("#my-form");
+        form.reset();
+      });
+    </script>
+  </body>
+</html>
